@@ -2,8 +2,7 @@ function App(){
     const [counters,setCounters] =React.useState([
         {id:1,number:0}
     ]);
-    const [sum,setSum] = React.useState(0)
-
+    const sum = counters.reduce(((acc,curr)=>acc+curr.number),0)
 
     const updateCounter =(id,a)=>{
         let idx = counters.findIndex(el=> el.id === id)
@@ -11,7 +10,6 @@ function App(){
         setCounters(prv =>{
             let newArr = [...prv];
             newArr[idx].number += a;
-            setSum(sum+a)
             return newArr;
         })
     }
@@ -19,14 +17,9 @@ function App(){
 
     const  addCounter =(add,id)=>{
         setCounters((prv)=>{
-            let newArr = [...prv];
-            if(add == 1)newArr.push({id:((newArr[newArr.length-1].id)+ 1),number:0})
-            else {
-                let idx = counters.findIndex(el=> el.id === id)
-                setSum(sum-newArr[idx].number)
-                newArr = newArr.filter((a)=>(a.id != id))
-            }
-            return newArr;
+            if(add == 1)return ([...prv,{id:((prv[prv.length-1].id)+ 1),number:0}])
+            else if(prv.length > 1) return prv.filter((a)=>(a.id != id))
+            else return prv
     })
     }
 
